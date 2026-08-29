@@ -22,7 +22,7 @@ class ProductAPI(BaseHTTPRequestHandler):
             self.send_json(404, {"error": "Not Found"})
             return
 
-        content_length = int(self.headers["Content-Length"], 0)
+        content_length = int(self.headers["Content-Length"])
 
         body = self.rfile.read(content_length)
 
@@ -35,6 +35,7 @@ class ProductAPI(BaseHTTPRequestHandler):
         for product in products:
             if "error" in product:
                 normalized_products.append(product)
+                continue
                 
             normalized_products.append(
                 {

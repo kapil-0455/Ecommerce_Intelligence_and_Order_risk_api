@@ -21,21 +21,21 @@ class requestClient(BaseHTTPRequestHandler):
 
                 self.wfile.write(json.dumps(customer_data).encode())
             except requests.exceptions.Timeout:
-                return {
-                    "staus_code":504,
-                    "error":"timeout error"
-                }
+                self.send_response(504)
+                self.send_header("content-type","application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"error":"timeout error"}).encode())
             except requests.exceptions.RequestException:
-                return{
-                    "status_code":502,
-                    "error":"request-error"
-                }
+                self.send_response(502)
+                self.send_header("content-type","application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"error":"request-error"}).encode())
         else:
             self.send_error(404,"Not found")
 
 
 
-server=HTTPServer(("localhost",8000),requestClient)
+server=HTTPServer(("localhost",8004),requestClient)
 print("Request client server started")
 server.serve_forever()
 
