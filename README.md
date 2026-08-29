@@ -8,21 +8,76 @@ This repository contains a microservices-based system designed to fetch product 
 
 The system is structured as a collection of distributed microservices communicating over HTTP. Below is a flowchart showing how data flows through the services when a risk evaluation request is sent:
 
-```mermaid
-graph TD
-    Client([Client / Postman]) -->|POST /risk| RiskAPI[Risk API :8005]
-    
-    subgraph Core Services
-        RiskAPI -->|POST /products| ProductAPI[Product API :8000]
-        RiskAPI -->|POST /customer-order| CustOrderAPI[Customer Order API :8004]
-    end
-    
-    subgraph External Mock APIs
-        ProductAPI -->|GET /products/{id}| DummyJSON[dummyjson.com]
-        CustOrderAPI -->|GET /customer/{id}| CustomerAPI[Customer API :8001]
-        CustOrderAPI -->|GET /order/{id}| OrderAPI[Order API :8002]
-        CustOrderAPI -->|GET /history/{id}| HistoryAPI[History API :8003]
-    end
+```text
+                          CLIENT / POSTMAN
+                                 │
+                                 ▼
+                     ┌──────────────────────┐
+                     │   API Requests       │
+                     └──────────┬───────────┘
+                                │
+               ┌────────────────┼────────────────┐
+               │                │                │
+               ▼                ▼                ▼
+         TASK 1              TASK 2           TASK 3
+      Product API        Customer Order API   Combined Risk API
+               │                │                │
+               │                │                │
+               ▼                ▼                ▼
+        Product IDs        Customer ID       Customer ID
+                          + Order ID          Order ID
+                                              + Product IDs
+               │                │                │
+               ▼                ▼                │
+        External Product   Queries 3 Mock APIs   │
+             API              Concurrently:      │
+               │         ┌──────┼──────┐         │
+               │         ▼      ▼      ▼         │
+               │      Customer Order History     │
+               │        API    API    API        │
+               │         │      │      │         │
+               │         └──────┼──────┘         │
+               │                ▼                │
+               │          Customer Order         │
+               │             Response            │
+               │                                 │
+               └──────────────┐   ┌──────────────┘
+                              │   │
+                              ▼   ▼
+                        ┌─────────────────┐
+                        │  asyncio.gather │
+                        └────────┬────────┘
+                                 │
+                     Product API + Customer API
+                        concurrently
+                                 │
+                                 ▼
+                        ┌─────────────────┐
+                        │   Risk Engine   │
+                        └────────┬────────┘
+                                 │
+                  ┌──────────────┼──────────────┐
+                  │              │              │
+                  ▼              ▼              ▼
+              Customer       Product        Order Amount
+               Status       Availability      Threshold
+                  │              │              │
+                  └──────────────┼──────────────┘
+                                 │
+                                 ▼
+                            risk_score
+                                 │
+                                 ▼
+                  ┌─────────────────────────┐
+                  │        Decision         │
+                  └────────────┬────────────┘
+                               │
+                   ┌───────────┼───────────┐
+                   ▼           ▼           ▼
+                APPROVED     REVIEW     REJECTED
+                               │
+                               ▼
+                         Final Response
 ```
 
 ---
