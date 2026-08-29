@@ -6,7 +6,7 @@ class orderAPI(BaseHTTPRequestHandler):
             
             
             order_id=int(self.path.split('/')[-1])
-            with open("data.json", "r") as file:
+            with open("../data.json", "r") as file:
                 data = json.load(file)
 
             for order in data:

@@ -5,7 +5,7 @@ class historyAPI(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path.startswith("/history/"):
             customer_id=int(self.path.split('/')[-1])
-            with open("data.json", "r") as file:
+            with open("../data.json", "r") as file:
                 data = json.load(file)
 
             for customer in data:
