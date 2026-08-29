@@ -1,0 +1,58 @@
+[
+    {
+        "customer_id": 501,
+        "order_id": 9001,
+        "order_amount": 45000,
+        "customer_status": "active",
+        "previous_orders": 8,
+        "order_status": "processing"
+    },
+    {
+        "customer_id": 502,
+        "order_id": 9002,
+        "order_amount": 25000,
+        "customer_status": "active",
+        "previous_orders": 5,
+        "order_status": "delivered"
+    },
+    {
+        "customer_id": 503,
+        "order_id": 9003,
+        "order_amount": 12000,
+        "customer_status": "inactive",
+        "previous_orders": 2,
+        "order_status": "cancelled"
+    },
+    {
+        "customer_id": 504,
+        "order_id": 9004,
+        "order_amount": 32000,
+        "customer_status": "active",
+        "previous_orders": 10,
+        "order_status": "processing"
+    },
+    {
+        "customer_id": 505,
+        "order_id": 9005,
+        "order_amount": 18000,
+        "customer_status": "active",
+        "previous_orders": 4,
+        "order_status": "shipped"
+    },
+    {
+        "customer_id": 506,
+        "order_id": 9006,
+        "order_amount": 55000,
+        "customer_status": "active",
+        "previous_orders": 12,
+        "order_status": "delivered"
+    },
+    {
+        "customer_id": 501,
+        "order_id": 9001,
+        "order_amount": 9000,
+        "customer_status": "inactive",
+        "previous_orders": 1,
+        "order_status": "cancelled"
+    }
+]
