@@ -5,16 +5,25 @@ class orderAPI(BaseHTTPRequestHandler):
         if self.path.startswith('/order/'):
             
             
-            order_id=self.path.split('/')[-1]
+            order_id=int(self.path.split('/')[-1])
+            with open("data.json", "r") as file:
+                data = json.load(file)
+
+            for order in data:
+
+                if order["order_id"] == order_id:
+
+                    response = {
+                        "order_id": order["order_id"],
+                        "amount": order["order_amount"],
+                        "status": order["order_status"]
+                    }
             self.send_response(200)
             self.send_header("Content-Type","application/json")
             self.end_headers()
-            response={
-                "order_id":int(order_id),
-                "amount":45000,
-                "status":"processing"
-            }
+            
             self.wfile.write(json.dumps(response).encode())
+            return
         else:
             self.send_error(404,"not found")
 

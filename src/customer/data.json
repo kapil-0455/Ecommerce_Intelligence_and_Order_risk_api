@@ -48,8 +48,8 @@
         "order_status": "delivered"
     },
     {
-        "customer_id": 507,
-        "order_id": 9007,
+        "customer_id": 501,
+        "order_id": 9001,
         "order_amount": 9000,
         "customer_status": "inactive",
         "previous_orders": 1,

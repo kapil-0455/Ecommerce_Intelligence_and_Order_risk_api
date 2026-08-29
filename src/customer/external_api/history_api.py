@@ -4,16 +4,25 @@ import json
 class historyAPI(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path.startswith("/history/"):
-            customer_id=self.path.split('/')[-1]
+            customer_id=int(self.path.split('/')[-1])
+            with open("data.json", "r") as file:
+                data = json.load(file)
+
+            for customer in data:
+
+                if customer["customer_id"] == customer_id:
+
+                    response = {
+                        "customer_id": customer["customer_id"],
+                        "previous_orders": customer["previous_orders"]
+                    }
             self.send_response(200)
             self.send_header("Content-Type","application/json")
             self.end_headers()
 
-            response={
-                "customer_id":int(customer_id),
-                "previous_orders":8
-            }
+            
             self.wfile.write(json.dumps(response).encode())
+            return
         else:
             self.send_error(404,"Not found")
 
