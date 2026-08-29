@@ -47,7 +47,15 @@ class HttpxClient(BaseHTTPRequestHandler):
             customer_id = data["customer_id"]
             order_id = data["order_id"]
 
-            customer, order, history = asyncio.run(fetch_data(customer_id, order_id))
+            result = asyncio.run(fetch_data(customer_id, order_id))
+            if isinstance(result, dict) and "error" in result:
+                self.send_response(result.get("status_code", 500))
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps(result).encode())
+                return
+
+            customer, order, history = result
             
 
             response = {
@@ -69,6 +77,6 @@ class HttpxClient(BaseHTTPRequestHandler):
             self.send_error(404,"Not found")
 
 
-server = HTTPServer(("localhost", 8000), HttpxClient)
+server = HTTPServer(("localhost", 8004), HttpxClient)
 print("HTTPX client server started")
 server.serve_forever()

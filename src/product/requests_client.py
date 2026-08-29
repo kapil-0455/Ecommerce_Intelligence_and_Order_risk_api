@@ -1,6 +1,5 @@
 import requests
 
-
 DEFAULT_TIMEOUT = 10
 
 
