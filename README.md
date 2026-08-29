@@ -129,37 +129,4 @@ python src/customer/httpx_client.py
 python src/combine/risk_api.py
 ```
 
----
 
-## How to Test
-
-### Testing via Postman
-You can test the risk evaluation gateway by sending a request to the Risk API:
-
-- **Method**: `POST`
-- **URL**: `http://localhost:8005/risk`
-- **Headers**: `Content-Type: application/json`
-- **Request Body**:
-```json
-{
-  "customer_id": 501,
-  "order_id": 9001,
-  "product_ids": [1, 2, 3]
-}
-```
-
-- **Example Response**:
-```json
-{
-  "customer_id": 501,
-  "order_id": 9001,
-  "products": 3,
-  "risk_score": 0,
-  "decision": "APPROVED",
-  "reason": [
-    "Customer is active",
-    "Product availability confirmed",
-    "Order amount within threshold"
-  ]
-}
-```
