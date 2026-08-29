@@ -4,7 +4,7 @@ class customerAPI(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path.startswith("/customer/"):
             customer_id=int(self.path.split("/")[-1])
-            with open("data.json","r") as file:
+            with open("../data.json","r") as file:
                 data=json.load(file)
             for customer in data:
                 if customer["customer_id"]==customer_id:
