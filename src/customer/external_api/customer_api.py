@@ -4,6 +4,7 @@ class customerAPI(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path.startswith("/customer/"):
             customer_id=self.path.split("/")[-1]
+            
             self.send_response(200)
             self.send_header("Content-Type","application/json")
             self.end_headers()
